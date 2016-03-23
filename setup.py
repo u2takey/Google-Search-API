@@ -12,10 +12,9 @@ except ImportError:
 with open("requirements.txt") as f:
     requirements = [req.strip() for req in f.readlines()]
 
-test_requirements = [
-    "nose",
-    "nose-cov"
-]
+with open("test_requirements.txt") as f:
+    test_requirements = [req.strip() for req in f.readlines()]
+
 setup(name='Google-Search-API',
       version='1.1.12',
       url='https://github.com/abenassi/Google-Search-API',

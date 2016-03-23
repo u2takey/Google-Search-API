@@ -71,43 +71,35 @@ class GoogleTest(unittest.TestCase):
         calc = google.calculate("157.3kg in grams")
         self.assertEqual(calc.value, 157300)
 
-    @load_html_file("html_files")
-    def test_exchange_rate(self, html_f):
+    # @load_html_file("html_files")
+    @vcr.use_cassette(get_dir_vcr("test_exchange_rate.yaml"))
+    def test_exchange_rate(self):
         """Test method to get an exchange rate in google."""
-
-        # replace method to get html from a test html file
-        google.currency.get_html = \
-            Mock(return_value=html_f.read().decode('utf8'))
 
         usd_to_eur = google.exchange_rate("USD", "EUR")
         self.assertGreater(usd_to_eur, 0.0)
 
-    @load_html_file("html_files")
-    def test_convert_currency(self, html_f):
+    # @load_html_file("html_files")
+    @vcr.use_cassette(get_dir_vcr("test_convert_currency.yaml"))
+    def test_convert_currency(self):
         """Test method to convert currency in google."""
-
-        # replace method to get html from a test html file
-        google.currency.get_html = \
-            Mock(return_value=html_f.read().decode('utf8'))
 
         euros = google.convert_currency(5.0, "USD", "EUR")
         self.assertGreater(euros, 0.0)
 
     # @load_html_file("html_files")
-    @vcr.use_cassette("test_standard_search.yaml")
+    @vcr.use_cassette(get_dir_vcr("test_standard_search.yaml"))
     def test_standard_search(self):
         """Test method to search in google."""
 
         search = google.search("github")
         self.assertNotEqual(len(search), 0)
 
-    @load_html_file("html_files")
-    def test_shopping_search(self, html_f):
+    # @load_html_file("html_files")
+    @vcr.use_cassette(get_dir_vcr("test_shopping_search.yaml"))
+    @unittest.skip("skip")
+    def test_shopping_search(self):
         """Test method for google shopping."""
-
-        # replace method to get html from a test html file
-        google.shopping_search.get_html = \
-            Mock(return_value=html_f.read().decode('utf8'))
 
         shop = google.shopping("Disgaea 4")
         self.assertNotEqual(len(shop), 0)

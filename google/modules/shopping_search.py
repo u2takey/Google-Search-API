@@ -33,7 +33,8 @@ def shopping(query, pages=1):
             j = 0
             soup = BeautifulSoup(html)
 
-            products = soup.findAll("li", "g")
+            products = soup.findAll("div", "g")
+            print "yoooo", products
             for prod in products:
                 res = ShoppingResult()
 

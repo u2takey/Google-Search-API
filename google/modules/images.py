@@ -297,10 +297,10 @@ def _find_divs_with_images(soup):
 
 def _get_file_name(link):
 
-    temp_name = link.rsplit('/', 1)[1]
+    temp_name = link.rsplit('/', 1)[-1]
     image_format = _parse_image_format(link)
 
-    if image_format and temp_name.rsplit(".", 1)[1] != image_format:
+    if image_format and temp_name.rsplit(".", 1)[-1] != image_format:
         file_name = temp_name.rsplit(".", 1)[0] + "." + image_format
 
     else:
@@ -352,7 +352,7 @@ def _get_thumb_data(res, img):
 
     try:
         img_style = img[0]["style"].split(";")
-        img_style_dict = {i.split(":")[0]: i.split(":")[1] for i in img_style}
+        img_style_dict = {i.split(":")[0]: i.split(":")[-1] for i in img_style}
         res.thumb_width = img_style_dict["width"]
         res.thumb_height = img_style_dict["height"]
     except:

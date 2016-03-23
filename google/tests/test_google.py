@@ -60,13 +60,14 @@ class GoogleTest(unittest.TestCase):
         res = google.search_images("apple", num_images=10)
         self.assertEqual(len(res), 10)
 
-    @load_html_file("html_files")
-    def test_calculator(self, html_f):
+    # @load_html_file("html_files")
+    # def test_calculator(self, html_f):
+    def test_calculator(self):
         """Test method to calculate in google."""
 
         # replace method to get html from a test html file
-        google.calculator.get_html_from_dynamic_site = \
-            Mock(return_value=html_f.read().decode('utf8'))
+        # google.calculator.get_html_from_dynamic_site = \
+        #     Mock(return_value=html_f.read().decode('utf8'))
 
         calc = google.calculate("157.3kg in grams")
         self.assertEqual(calc.value, 157300)

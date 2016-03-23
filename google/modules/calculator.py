@@ -60,11 +60,13 @@ def calculate(expr):
 
 # PRIVATE
 def _get_to_value(bs):
-    return float(bs.find("input", {"id": "ucw_rhs_d"})["value"])
+    input_node = bs.find("div", {"id": "_Cif"})
+    return float(input_node.find("input")["value"])
 
 
 def _get_from_value(bs):
-    return float(bs.find("input", {"id": "ucw_lhs_d"})["value"])
+    input_node = bs.find("div", {"id": "_Aif"})
+    return float(input_node.find("input")["value"])
 
 
 def _get_to_unit(bs):

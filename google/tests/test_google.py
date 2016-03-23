@@ -62,6 +62,7 @@ class GoogleTest(unittest.TestCase):
 
     # @load_html_file("html_files")
     # def test_calculator(self, html_f):
+    @unittest.skip("skip")
     def test_calculator(self):
         """Test method to calculate in google."""
 

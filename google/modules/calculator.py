@@ -14,10 +14,15 @@ class CalculatorResult:
         self.value = None  # Result value (eg. 157300.0)
         self.from_value = None  # Initial value (eg. 157.3)
         self.unit = None  # Result unit (eg. u'grams') (NOT implemented yet)
-        self.from_unit = None  # Initial unit (eg. u'kilograms') (NOT implemented yet)
-        self.expr = None  # Initial expression (eg. u'157.3 grams') (NOT implemented yet)
-        self.result = None  # Result expression  (eg. u'157300 kilograms') (NOT implemented yet)
-        self.fullstring = None  # Complete expression (eg. u'157.3 kilograms = 157300 grams') (NOT implemented yet)
+        # Initial unit (eg. u'kilograms') (NOT implemented yet)
+        self.from_unit = None
+        # Initial expression (eg. u'157.3 grams') (NOT implemented yet)
+        self.expr = None
+        # Result expression  (eg. u'157300 kilograms') (NOT implemented yet)
+        self.result = None
+        # Complete expression (eg. u'157.3 kilograms = 157300 grams') (NOT
+        # implemented yet)
+        self.fullstring = None
 
     def __repr__(self):
         return unidecode(self.value)

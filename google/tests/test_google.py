@@ -4,6 +4,9 @@ from google import google
 from google import currency, images
 from mock import Mock
 import os
+import vcr
+
+BASE_DIR = os.path.dirname(__file__)
 
 
 def load_html_file(path):
@@ -24,6 +27,11 @@ def load_html_file(path):
 
         return test_decorated
     return test_decorator
+
+
+# HELPERS
+def get_dir_vcr(name):
+    return os.path.join(BASE_DIR, "vcr_cassetes", name)
 
 
 class GoogleTest(unittest.TestCase):
@@ -85,13 +93,10 @@ class GoogleTest(unittest.TestCase):
         euros = google.convert_currency(5.0, "USD", "EUR")
         self.assertGreater(euros, 0.0)
 
-    @load_html_file("html_files")
-    def test_standard_search(self, html_f):
+    # @load_html_file("html_files")
+    @vcr.use_cassette("test_standard_search.yaml")
+    def test_standard_search(self):
         """Test method to search in google."""
-
-        # replace method to get html from a test html file
-        google.standard_search.get_html = \
-            Mock(return_value=html_f.read().decode('utf8'))
 
         search = google.search("github")
         self.assertNotEqual(len(search), 0)
@@ -150,7 +155,8 @@ class SearchImagesTest(unittest.TestCase):
 
     def test_repr(self):
         res = images.ImageResult()
-        assert repr(res) == 'ImageResult(index=None, page=None, domain=None, link=None)'
+        assert repr(
+            res) == 'ImageResult(index=None, page=None, domain=None, link=None)'
         res.page = 1
         res.index = 11
         res.name = 'test'
@@ -158,7 +164,8 @@ class SearchImagesTest(unittest.TestCase):
         res.format = 'test'
         res.domain = 'test'
         res.link = 'http://aa.com'
-        assert repr(res) == 'ImageResult(index=11, page=1, domain=test, link=http://aa.com)'
+        assert repr(
+            res) == 'ImageResult(index=11, page=1, domain=test, link=http://aa.com)'
 
     def test_download(self):
         pass

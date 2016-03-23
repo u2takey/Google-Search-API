@@ -71,3 +71,4 @@ target/
 *.egg-info
 *.dmp
 *.zip
+.DS_Store

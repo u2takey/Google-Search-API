@@ -7,6 +7,8 @@ try:
 except ImportError:
     from distutils.core import setup
 
+# from requirements import r
+
 with open("requirements.txt") as f:
     requirements = [req.strip() for req in f.readlines()]
 
@@ -41,5 +43,6 @@ setup(name='Google-Search-API',
       ],
       setup_requires=['nose>=1.0'],
       test_suite='nose.collector',
-      tests_require=test_requirements
+      tests_require=test_requirements,
+      # **r.requirements
       )

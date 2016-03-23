@@ -62,10 +62,10 @@ def search(query, pages=1, lang='en', void=True):
 
         if html:
             soup = BeautifulSoup(html, "html.parser")
-            lis = soup.findAll("li", attrs={"class": "g"})
-            
+            divs = soup.findAll("div", attrs={"class": "g"})
+
             j = 0
-            for li in lis:
+            for li in divs:
                 res = GoogleResult()
 
                 res.page = i
@@ -90,7 +90,7 @@ def search(query, pages=1, lang='en', void=True):
 def _get_name(li):
     """Return the name of a google search."""
     a = li.find("a")
-    #return a.text.encode("utf-8").strip()
+    # return a.text.encode("utf-8").strip()
     if a is not None:
         return a.text.strip()
     return None
@@ -136,7 +136,7 @@ def _get_description(li):
     if sdiv:
         stspan = sdiv.find("span", attrs={"class": "st"})
         if stspan is not None:
-        #return stspan.text.encode("utf-8").strip()
+            # return stspan.text.encode("utf-8").strip()
             return stspan.text.strip()
     else:
         return None

@@ -1,12 +1,17 @@
 from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import division
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from past.utils import old_div
 import time
 from selenium import webdriver
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 from functools import wraps
 # import requests
-from urllib import urlencode
+from urllib.parse import urlencode
 
 
 def measure_time(fn):
@@ -44,11 +49,11 @@ def _get_search_url(query, page=0, per_page=10, lang='en'):
 def get_html(url):
     header = "Mozilla/5.001 (windows; U; NT4.0; en-US; rv:1.0) Gecko/25250101"
     try:
-        request = urllib2.Request(url)
+        request = urllib.request.Request(url)
         request.add_header("User-Agent", header)
-        html = urllib2.urlopen(request).read()
+        html = urllib.request.urlopen(request).read()
         return html
-    except urllib2.HTTPError as e:
+    except urllib.error.HTTPError as e:
         print("Error accessing:", url)
         if e.code == 503 and 'CaptchaRedirect' in e.read():
             print("Google is requiring a Captcha. " \
@@ -98,7 +103,7 @@ def get_html_from_dynamic_site(url, timeout=120,
     RV = ""
 
     # try several attempts
-    for i in xrange(attempts):
+    for i in range(attempts):
         try:
             # load browser
             browser = get_browser_with_url(url, timeout, driver)
@@ -143,7 +148,7 @@ def timeit(func=None, loops=1, verbose=False):
                     print('\t%r ran in %2.9f sec on run %s' % (func.__name__, dt, i))
             print('%r min run time was %2.9f sec' % (func.__name__, mins))
             print('%r max run time was %2.9f sec' % (func.__name__, maxs))
-            print('%r avg run time was %2.9f sec in %s runs' % (func.__name__, sums / loops, loops))
+            print('%r avg run time was %2.9f sec in %s runs' % (func.__name__, old_div(sums, loops), loops))
             print('==== end ====')
             return result
 

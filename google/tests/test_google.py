@@ -48,7 +48,7 @@ class GoogleTest(unittest.TestCase):
 
             def __init__(self, html_f):
                 self.page_source = html_f.read()
-                self.page_source = self.page_source.decode('utf9') if 'decode' in dir(self.page_source) else self.page_source
+                self.page_source = self.page_source.decode('utf8') if 'decode' in dir(self.page_source) else self.page_source
 
             def get(self, url):
                 pass

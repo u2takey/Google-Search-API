@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
 from unidecode import unidecode
 
-from utils import get_browser_with_url, write_html_to_file, measure_time
+from .utils import get_browser_with_url, write_html_to_file, measure_time
 from bs4 import BeautifulSoup
 import urlparse
 import sys
@@ -180,13 +182,13 @@ class ImageResult:
                     shutil.copyfileobj(response.raw, output_file)
                     # output_file.write(response.content)
             else:
-                print "\r\rskiped! cached image"
+                print("\r\rskiped! cached image")
 
             del response
 
         except Exception as inst:
-            print self.link, "has failed:"
-            print inst
+            print(self.link, "has failed:")
+            print(inst)
 
     def _get_path_filename(self, path):
         """Build the filename to download.
@@ -357,7 +359,7 @@ def _get_thumb_data(res, img):
         res.thumb_height = img_style_dict["height"]
     except:
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        print exc_type, exc_value, "index=", res.index
+        print(exc_type, exc_value, "index=", res.index)
 
 
 # PUBLIC
@@ -505,7 +507,7 @@ def download(image_results, path=None):
 
         progress = "".join(["Downloading image ", str(i),
                             " (", str(total_images), ")"])
-        print progress
+        print(progress)
         sys.stdout.flush()
 
         _download_image(image_result, path)
@@ -531,7 +533,7 @@ class ThreadUrl(threading.Thread):
             counter = self.total - self.queue.qsize()
             progress = "".join(["Downloading image ", str(counter),
                                 " (", str(self.total), ")"])
-            print progress
+            print(progress)
             sys.stdout.flush()
             _download_image(image_result, self.path)
 

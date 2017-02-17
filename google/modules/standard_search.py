@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
+from __future__ import absolute_import
 
-from utils import _get_search_url, get_html
+from .utils import _get_search_url, get_html
 from bs4 import BeautifulSoup
 import urlparse
 from urllib2 import unquote

@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
+from __future__ import absolute_import
 
-from modules import images
-from modules import currency
-from modules import calculator
-from modules import standard_search
+from .modules import images
+from .modules import currency
+from .modules import calculator
+from .modules import standard_search
 # from modules import shopping_search
 
 __author__ = "Anthony Casagrande <birdapi@gmail.com>, " + \

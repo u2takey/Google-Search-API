@@ -1,3 +1,4 @@
+from builtins import object
 import unittest
 import nose
 from google import google
@@ -46,7 +47,8 @@ class GoogleTest(unittest.TestCase):
             """Mock browser to replace selenium driver."""
 
             def __init__(self, html_f):
-                self.page_source = html_f.read().decode('utf8')
+                self.page_source = html_f.read()
+                self.page_source = self.page_source.decode('utf9') if 'decode' in dir(self.page_source) else self.page_source
 
             def get(self, url):
                 pass

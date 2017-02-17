@@ -2,13 +2,16 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 
+from builtins import range
+from builtins import object
+
 from .utils import get_html, normalize_query
 from bs4 import BeautifulSoup
 import re
 from unidecode import unidecode
 
 
-class ShoppingResult:
+class ShoppingResult(object):
 
     """Represents a shopping result."""
 

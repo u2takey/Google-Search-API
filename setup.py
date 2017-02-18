@@ -16,7 +16,7 @@ with open("test_requirements.txt") as f:
     test_requirements = [req.strip() for req in f.readlines()]
 
 setup(name='Google-Search-API',
-      version='1.1.13',
+      version='1.1.14',
       url='https://github.com/abenassi/Google-Search-API',
       description='Search in google',
       author='Anthony Casagrande, Agustin Benassi',
@@ -39,6 +39,9 @@ setup(name='Google-Search-API',
           'Natural Language :: English',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.7'
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
       ],
       setup_requires=['nose>=1.0'],
       test_suite='nose.collector',

@@ -1,12 +1,14 @@
 from __future__ import unicode_literals
+from __future__ import absolute_import
+from builtins import object
 from unidecode import unidecode
 
-from utils import get_html_from_dynamic_site
-from utils import _get_search_url
+from .utils import get_html_from_dynamic_site
+from .utils import _get_search_url
 from bs4 import BeautifulSoup
 
 
-class CalculatorResult:
+class CalculatorResult(object):
 
     """Represents a result returned from google calculator."""
 

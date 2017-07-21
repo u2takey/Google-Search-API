@@ -12,6 +12,7 @@ import urllib.request, urllib.error, urllib.parse
 from functools import wraps
 # import requests
 from urllib.parse import urlencode
+from fake_useragent import UserAgent
 
 
 def measure_time(fn):
@@ -47,7 +48,9 @@ def _get_search_url(query, page=0, per_page=10, lang='en'):
 
 
 def get_html(url):
-    header = "Mozilla/5.001 (windows; U; NT4.0; en-US; rv:1.0) Gecko/25250101"
+    ua = UserAgent()
+    header = ua.random
+    
     try:
         request = urllib.request.Request(url)
         request.add_header("User-Agent", header)

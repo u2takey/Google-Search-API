@@ -284,4 +284,4 @@ All contributions are very welcome! As you have seen, there is still some method
 
 Other interesting things that you may do is to build a good command line interface for the package. You can also take a look to the [TODO list](https://github.com/abenassi/Google-Search-API/blob/master/TODO.md)
 
-For all contributions, we intend to follow the [Google Python Style Guide](https://google-styleguide.googlecode.com/svn/trunk/pyguide.html)
+For all contributions, we intend to follow the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)

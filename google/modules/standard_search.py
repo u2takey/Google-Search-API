@@ -50,7 +50,7 @@ class GoogleResult(object):
 
 
 # PUBLIC
-def search(query, pages=1, lang='en', void=True):
+def search(query, pages=1, lang='en', ncr=True, void=True):
     """Returns a list of GoogleResult.
 
     Args:
@@ -62,7 +62,7 @@ def search(query, pages=1, lang='en', void=True):
 
     results = []
     for i in range(pages):
-        url = _get_search_url(query, i, lang=lang)
+        url = _get_search_url(query, i, lang=lang, ncr=ncr)
         html = get_html(url)
 
         if html:
@@ -87,7 +87,6 @@ def search(query, pages=1, lang='en', void=True):
                         continue
                 results.append(res)
                 j += 1
-
     return results
 
 

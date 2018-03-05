@@ -50,7 +50,7 @@ class GoogleResult(object):
 
 
 # PUBLIC
-def search(query, pages=1, lang='en', ncr=True, void=True):
+def search(query, pages=1, lang='en', ncr=False, void=True):
     """Returns a list of GoogleResult.
 
     Args:

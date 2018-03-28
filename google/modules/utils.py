@@ -12,7 +12,7 @@ import urllib.request, urllib.error, urllib.parse
 from functools import wraps
 # import requests
 from urllib.parse import urlencode
-
+import sys
 
 def measure_time(fn):
 
@@ -47,7 +47,15 @@ def _get_search_url(query, page=0, per_page=10, lang='en', ncr=False):
         params['gws_rd'] = 'cr' # Google Web Server ReDirect: CountRy.
 
     params = urlencode(params)
-    url = u"http://www.google.com/search?" + params
+
+    # Workaround to switch between http and https, since this way
+    # it seems to avoid the 503 error when performing a lot of queries. 
+    # Weird, but it works.
+    # You may also wanna wait some time between queries, say, randint(50,65)
+    # between each query, and randint(180,240) every 100 queries.
+    https = int(time.time()) % 2 == 0
+    bare_url = u"https://www.google.com/search?" if https else u"http://www.google.com/search?"
+    url = bare_url + params
     # return u"http://www.google.com/search?hl=%s&q=%s&start=%i&num=%i" %
     # (lang, normalize_query(query), page * per_page, per_page)
     return url
@@ -62,9 +70,8 @@ def get_html(url):
         return html
     except urllib.error.HTTPError as e:
         print("Error accessing:", url)
-        if e.code == 503 and 'CaptchaRedirect' in e.read():
-            print("Google is requiring a Captcha. " \
-                  "For more information see: 'https://support.google.com/websearch/answer/86640'")
+        if e.code == 503:
+            sys.exit("503 Error: service is currently unavailable. Program will exit.")
         return None
     except Exception as e:
         print("Error accessing:", url)

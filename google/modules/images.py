@@ -434,7 +434,7 @@ def search(query, image_options=None, num_images=50):
     results = set()
     curr_num_img = 1
     page = 0
-    browser = get_browser_with_url("")
+    browser = get_browser_with_url("about:home")
     while curr_num_img <= num_images:
 
         page += 1

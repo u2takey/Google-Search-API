@@ -12,6 +12,7 @@ import urllib.request, urllib.error, urllib.parse
 from functools import wraps
 # import requests
 from urllib.parse import urlencode
+from fake_useragent import UserAgent
 import sys
 
 def measure_time(fn):
@@ -47,6 +48,7 @@ def _get_search_url(query, page=0, per_page=10, lang='en', ncr=False):
         params['gws_rd'] = 'cr' # Google Web Server ReDirect: CountRy.
 
     params = urlencode(params)
+    url = u"https://www.google.com/search?" + params
 
     # Workaround to switch between http and https, since this way
     # it seems to avoid the 503 error when performing a lot of queries. 
@@ -56,13 +58,16 @@ def _get_search_url(query, page=0, per_page=10, lang='en', ncr=False):
     https = int(time.time()) % 2 == 0
     bare_url = u"https://www.google.com/search?" if https else u"http://www.google.com/search?"
     url = bare_url + params
+
     # return u"http://www.google.com/search?hl=%s&q=%s&start=%i&num=%i" %
     # (lang, normalize_query(query), page * per_page, per_page)
     return url
 
 
 def get_html(url):
-    header = "Mozilla/5.001 (windows; U; NT4.0; en-US; rv:1.0) Gecko/25250101"
+    ua = UserAgent()
+    header = ua.random
+    
     try:
         request = urllib.request.Request(url)
         request.add_header("User-Agent", header)
@@ -70,6 +75,10 @@ def get_html(url):
         return html
     except urllib.error.HTTPError as e:
         print("Error accessing:", url)
+        print(e)
+        if e.code == 503 and 'CaptchaRedirect' in e.read():
+            print("Google is requiring a Captcha. " \
+                  "For more information see: 'https://support.google.com/websearch/answer/86640'")
         if e.code == 503:
             sys.exit("503 Error: service is currently unavailable. Program will exit.")
         return None

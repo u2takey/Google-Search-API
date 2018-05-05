@@ -4,3 +4,4 @@ requests
 unidecode
 vcrpy
 future
+fake-useragent

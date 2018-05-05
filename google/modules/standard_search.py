@@ -26,6 +26,7 @@ class GoogleResult(object):
         self.cached = None  # Cached version link of page
         self.page = None  # Results page this one was on
         self.index = None  # What index on this page it was on
+        self.number_of_results = None # The total number of results the query returned
 
     def __repr__(self):
         name = self._limit_str_size(self.name, 55)
@@ -50,24 +51,28 @@ class GoogleResult(object):
 
 
 # PUBLIC
-def search(query, pages=1, lang='en', void=True):
+def search(query, pages=1, lang='en', ncr=False, void=True):
     """Returns a list of GoogleResult.
 
     Args:
         query: String to search in google.
         pages: Number of pages where results must be taken.
 
+    TODO: add support to get the google results.
     Returns:
         A GoogleResult object."""
 
     results = []
     for i in range(pages):
-        url = _get_search_url(query, i, lang=lang)
+        url = _get_search_url(query, i, lang=lang, ncr=ncr)
         html = get_html(url)
 
         if html:
             soup = BeautifulSoup(html, "html.parser")
             divs = soup.findAll("div", attrs={"class": "g"})
+            results_div = soup.find("div", attrs={"id": "resultStats"})
+            results_text = results_div.get_text()
+            number_of_results = _get_number_of_results(results_text) if results_text else 0
 
             j = 0
             for li in divs:
@@ -82,12 +87,13 @@ def search(query, pages=1, lang='en', void=True):
                 res.description = _get_description(li)
                 res.thumb = _get_thumb()
                 res.cached = _get_cached(li)
+                res.number_of_results = number_of_results
+
                 if void is True:
                     if res.description is None:
                         continue
                 results.append(res)
                 j += 1
-
     return results
 
 
@@ -160,3 +166,13 @@ def _get_cached(li):
         if link.startswith("/url?") or link.startswith("/search?"):
             return urllib.parse.urljoin("http://www.google.com", link)
     return None
+
+def _get_number_of_results(results_div_text):
+    """Return the total number of results of a google search."""
+    if results_div_text:
+        regex = r"(?:About )?((?:\d+,)*\d+) results?"
+        m = match(regex, results_div_text)
+        results = int(m.groups()[0].replace(",",""))
+        return results
+    else:
+        return 0

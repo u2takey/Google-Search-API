@@ -8,7 +8,7 @@ from builtins import object
 from .utils import _get_search_url, get_html
 from bs4 import BeautifulSoup
 import urllib.parse
-from urllib.parse import unquote
+from urllib.parse import unquote, parse_qs, urlparse
 from unidecode import unidecode
 from re import match
 
@@ -51,12 +51,13 @@ class GoogleResult(object):
 
 
 # PUBLIC
-def search(query, pages=1, lang='en', ncr=False, void=True):
+def search(query, pages=1, lang='en', area='com', ncr=False, void=True):
     """Returns a list of GoogleResult.
 
     Args:
         query: String to search in google.
         pages: Number of pages where results must be taken.
+        area : Area of google homepages.
 
     TODO: add support to get the google results.
     Returns:
@@ -64,7 +65,7 @@ def search(query, pages=1, lang='en', ncr=False, void=True):
 
     results = []
     for i in range(pages):
-        url = _get_search_url(query, i, lang=lang, ncr=ncr)
+        url = _get_search_url(query, i, lang=lang, area=area, ncr=ncr)
         html = get_html(url)
 
         if html:
@@ -107,20 +108,61 @@ def _get_name(li):
     return None
 
 
+def _filter_link(link):
+    '''Filter links found in the Google result pages HTML code.
+    Returns None if the link doesn't yield a valid result.
+    '''
+    try:
+        # Valid results are absolute URLs not pointing to a Google domain
+        # like images.google.com or googleusercontent.com
+        o = urlparse(link, 'http')
+        # link type-1
+        # >>> "https://www.gitbook.com/book/ljalphabeta/python-"
+        if o.netloc and 'google' not in o.netloc:
+            return link
+        # link type-2
+        # >>> "http://www.google.com/url?url=http://python.jobbole.com/84108/&rct=j&frm=1&q=&esrc=s&sa=U&ved=0ahUKEwj3quDH-Y7UAhWG6oMKHdQ-BQMQFggUMAA&usg=AFQjCNHPws5Buru5Z71wooRLHT6mpvnZlA"
+        if o.netloc and o.path.startswith('/url'):
+            try:
+                link = parse_qs(o.query)['url'][0]
+                o = urlparse(link, 'http')
+                if o.netloc and 'google' not in o.netloc:
+                    return link
+            except KeyError:
+                pass
+        # Decode hidden URLs.
+        if link.startswith('/url?'):
+            try:
+                # link type-3
+                # >>> "/url?q=http://python.jobbole.com/84108/&sa=U&ved=0ahUKEwjFw6Txg4_UAhVI5IMKHfqVAykQFggUMAA&usg=AFQjCNFOTLpmpfqctpIn0sAfaj5U5gAU9A"
+                link = parse_qs(o.query)['q'][0]
+                # Valid results are absolute URLs not pointing to a Google domain
+                # like images.google.com or googleusercontent.com
+                o = urlparse(link, 'http')
+                if o.netloc and 'google' not in o.netloc:
+                    return link
+            except KeyError:
+                # link type-4
+                # >>> "/url?url=https://machine-learning-python.kspax.io/&rct=j&frm=1&q=&esrc=s&sa=U&ved=0ahUKEwj3quDH-Y7UAhWG6oMKHdQ-BQMQFggfMAI&usg=AFQjCNEfkUI0RP_RlwD3eI22rSfqbYM_nA"
+                link = parse_qs(o.query)['url'][0]
+                o = urlparse(link, 'http')
+                if o.netloc and 'google' not in o.netloc:
+                    return link
+
+    # Otherwise, or on error, return None.
+    except Exception:
+        pass
+    return None
+
+
 def _get_link(li):
     """Return external link from a search."""
     try:
         a = li.find("a")
         link = a["href"]
-    except:
+    except Exception:
         return None
-
-    if link.startswith("/url?"):
-        m = match('/url\?(url|q)=(.+?)&', link)
-        if m and len(m.groups()) == 2:
-            return unquote(m.group(2))
-
-    return None
+    return _filter_link(link)
 
 
 def _get_google_link(li):
@@ -128,7 +170,7 @@ def _get_google_link(li):
     try:
         a = li.find("a")
         link = a["href"]
-    except:
+    except Exception:
         return None
 
     if link.startswith("/url?") or link.startswith("/search?"):

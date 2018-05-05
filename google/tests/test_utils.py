@@ -15,8 +15,8 @@ class UtilsTestCase(unittest.TestCase):
     """Tests for helper methods."""
     @unittest.skip('Don\t know why but it not work. Skipping for now')
     def test_get_search_url(self):
-        url = _get_search_url("apple", 0, 10, "en")
-        exp_url = "http://www.google.com/search?q=apple&start=0&num=10&hl=en"
+        url = _get_search_url("apple", 0, 10, "en", "jp")
+        exp_url = "http://www.google.co.jp/search?q=apple&start=0&num=10&hl=en"
         self.assertEqual(url, exp_url)
 
 

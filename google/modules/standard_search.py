@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import urllib.parse
 from urllib.parse import unquote, parse_qs, urlparse
 from unidecode import unidecode
-from re import match
+from re import match, findall
 
 
 class GoogleResult(object):
@@ -71,7 +71,7 @@ def search(query, pages=1, lang='en', area='com', ncr=False, void=True):
         if html:
             soup = BeautifulSoup(html, "html.parser")
             divs = soup.findAll("div", attrs={"class": "g"})
-            
+
             results_div = soup.find("div", attrs={"id": "resultStats"})
             number_of_results = _get_number_of_results(results_div)
 
@@ -216,9 +216,9 @@ def _get_number_of_results(results_div):
     try:
         results_div_text = results_div.get_text()
         if results_div_text:
-            regex = r"(?:About )?((?:\d+,)*\d+) results?"
-            m = match(regex, results_div_text)
-            results = int(m.groups()[0].replace(",",""))
+            regex = r"((?:\d+,)*\d+)"
+            m = findall(regex, results_div_text)
+            results = int(m[0].replace(",",""))
             return results
     except Exception as e:
         return 0

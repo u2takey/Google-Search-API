@@ -59,7 +59,7 @@ def _get_search_url(query, page=0, per_page=10, lang='en', area='com', ncr=False
     }
 
     # Set time period for query if given
-    if time_period:
+    if time_period and time_period in time_mapping:
         params['tbs'] = time_mapping[time_period]
 
     # This will allow to search Google with No Country Redirect

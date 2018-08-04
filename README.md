@@ -44,13 +44,13 @@ The repo is structured like a package, so it can be installed from pip using
 github clone url. From command line type:
 
 ```
-pip install Google-Search-API
+pip install git+https://github.com/abenassi/Google-Search-API
 ```
 
 To upgrade the package if you have already installed it:
 
 ```
-pip install Google-Search-API --upgrade
+pip install git+https://github.com/abenassi/Google-Search-API --upgrade
 ```
 
 Please note that you should also install **Firefox browser** in order to use images search.

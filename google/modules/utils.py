@@ -40,7 +40,7 @@ def normalize_query(query):
     return query.strip().replace(":", "%3A").replace("+", "%2B").replace("&", "%26").replace(" ", "+")
 
 
-def _get_search_url(query, page=0, per_page=10, lang='en', area='com', ncr=False, time_period=False):
+def _get_search_url(query, page=0, per_page=10, lang='en', area='com', ncr=False, time_period=False, sort_by_date=False):
     # note: num per page might not be supported by google anymore (because of
     # google instant)
 
@@ -58,9 +58,15 @@ def _get_search_url(query, page=0, per_page=10, lang='en', area='com', ncr=False
         'year': 'qdr:y'
     }
 
+
+    tbs_param = []
     # Set time period for query if given
     if time_period and time_period in time_mapping:
-        params['tbs'] = time_mapping[time_period]
+        tbs_param.append(time_mapping[time_period])
+
+    if sort_by_date:
+        tbs_param.append('sbd:1')
+    params['tbs'] = ','.join(tbs_param)
 
     # This will allow to search Google with No Country Redirect
     if ncr:

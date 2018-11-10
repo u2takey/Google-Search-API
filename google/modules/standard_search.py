@@ -51,7 +51,7 @@ class GoogleResult(object):
 
 
 # PUBLIC
-def search(query, pages=1, lang='en', area='com', ncr=False, void=True, time_period=False):
+def search(query, pages=1, lang='en', area='com', ncr=False, void=True, time_period=False, sort_by_date=False):
     """Returns a list of GoogleResult.
 
     Args:
@@ -65,7 +65,7 @@ def search(query, pages=1, lang='en', area='com', ncr=False, void=True, time_per
 
     results = []
     for i in range(pages):
-        url = _get_search_url(query, i, lang=lang, area=area, ncr=ncr, time_period=time_period)
+        url = _get_search_url(query, i, lang=lang, area=area, ncr=ncr, time_period=time_period, sort_by_date=sort_by_date)
         html = get_html(url)
 
         if html:

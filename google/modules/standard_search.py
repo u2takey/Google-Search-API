@@ -216,9 +216,13 @@ def _get_number_of_results(results_div):
     try:
         results_div_text = results_div.get_text()
         if results_div_text:
-            regex = r"((?:\d+,)*\d+)"
+            regex = r"((?:\d+[,\.])*\d+)"
             m = findall(regex, results_div_text)
-            results = int(m[0].replace(",",""))
+
+            # Clean up the number.
+            num = m[0].replace(",", "").replace(".", "")
+
+            results = int(num)
             return results
     except Exception as e:
         return 0

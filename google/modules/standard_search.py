@@ -51,20 +51,21 @@ class GoogleResult(object):
 
 
 # PUBLIC
-def search(query, pages=1, lang='en', area='com', ncr=False, void=True, time_period=False, sort_by_date=False):
+def search(query, pages=1, lang='en', area='com', ncr=False, void=True, time_period=False, sort_by_date=False, first_page=0):
     """Returns a list of GoogleResult.
 
     Args:
         query: String to search in google.
         pages: Number of pages where results must be taken.
         area : Area of google homepages.
+        first_page : First page.
 
     TODO: add support to get the google results.
     Returns:
         A GoogleResult object."""
 
     results = []
-    for i in range(pages):
+    for i in range(first_page, first_page + pages):
         url = _get_search_url(query, i, lang=lang, area=area, ncr=ncr, time_period=time_period, sort_by_date=sort_by_date)
         html = get_html(url)
 

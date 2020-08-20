@@ -27,7 +27,8 @@ class GoogleResult(object):
         self.page = None  # Results page this one was on
         self.index = None  # What index on this page it was on
         self.number_of_results = None # The total number of results the query returned
-
+        self.is_pdf = None # This boolean is true if google thinks this result leads to a PDF file
+        
     def __repr__(self):
         name = self._limit_str_size(self.name, 55)
         description = self._limit_str_size(self.description, 49)
@@ -90,7 +91,8 @@ def search(query, pages=1, lang='en', area='com', ncr=False, void=True, time_per
                 res.thumb = _get_thumb()
                 res.cached = _get_cached(li)
                 res.number_of_results = number_of_results
-
+                res.is_pdf = _get_is_pdf(li)
+                
                 if void is True:
                     if res.description is None:
                         continue
@@ -210,6 +212,11 @@ def _get_cached(li):
             return urllib.parse.urljoin("http://www.google.com", link)
     return None
 
+def _get_is_pdf(li):
+    """Return if the link is marked by google as PDF"""
+    sdiv = li.find("span", attrs={"class": "ZGwO7 C0kchf NaCKVc"})
+    return True if sdiv else False
+    
 def _get_number_of_results(results_div):
     """Return the total number of results of the google search.
     Note that the returned value will be the same for all the GoogleResult

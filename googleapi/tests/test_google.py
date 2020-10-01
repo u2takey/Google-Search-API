@@ -1,8 +1,8 @@
 from builtins import object
 import unittest
 import nose
-from google import google
-from google import currency, images
+from googleapi import google
+from googleapi import currency, images, shopping_search
 from mock import Mock
 import os
 import vcr
@@ -105,7 +105,7 @@ class GoogleTest(unittest.TestCase):
     def test_shopping_search(self):
         """Test method for google shopping."""
 
-        shop = google.shopping("Disgaea 4")
+        shop = google.shopping_search("Disgaea 4")
         self.assertNotEqual(len(shop), 0)
 
 

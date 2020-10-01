@@ -8,7 +8,7 @@ from __future__ import with_statement
 import unittest
 import nose
 
-from google.modules.utils import _get_search_url
+from googleapi.modules.utils import _get_search_url
 
 
 class UtilsTestCase(unittest.TestCase):

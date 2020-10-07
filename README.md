@@ -61,14 +61,14 @@ Google-Search-API folder.
 ```python
 import os
 os.chdir("C:\Path_where_repo_is")
-from google import google
+from googleapi import google
 ```
 
 ## Google Web Search
 You can search google web in the following way:
 
 ```python
-from google import google
+from googleapi import google
 num_page = 3
 search_results = google.search("This is my query", num_page)
 ```
@@ -96,7 +96,7 @@ GoogleResult:
 Attempts to search google calculator for the result of an expression. Returns a `CalculatorResult` if successful or `None` if it fails.
 
 ```python
-from google import google
+from googleapi import google
 google.calculate("157.3kg in grams")
 ```
 
@@ -122,7 +122,7 @@ Image search uses the selenium & the Firefox driver, therefor you MUST have [Fir
 Perform a google image search on "banana" and filter it:
 
 ```python
-from google import google, images
+from googleapi import google, images
 options = images.ImageOptions()
 options.image_type = images.ImageType.CLIPART
 options.larger_than = images.LargerThan.MP_4
@@ -235,7 +235,7 @@ Convert between one currency and another using google calculator. Results are re
 Convert 5 US Dollars to Euros using the official 3 letter currency acronym ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)):
 
 ```python
-from google import google
+from googleapi import google
 euros = google.convert_currency(5.0, "USD", "EUR")
 print "5.0 USD = {0} EUR".format(euros)
 ```

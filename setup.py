@@ -25,11 +25,11 @@ setup(name='Google-Search-API',
       maintainer_email='agusbenassi@gmail.com',
       license='MIT',
       packages=[
-          'google',
-          'google.modules',
-          'google.tests'
+          'googleapi',
+          'googleapi.modules',
+          'googleapi.tests'
       ],
-      package_dir={'google': 'google'},
+      package_dir={'googleapi': 'googleapi'},
       include_package_data=True,
       install_requires=requirements,
       keywords="google search images api",

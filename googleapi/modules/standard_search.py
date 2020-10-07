@@ -188,9 +188,9 @@ def _get_description(li):
 
     TODO: There are some text encoding problems to resolve."""
 
-    sdiv = li.find("div", attrs={"class": "s"})
+    sdiv = li.find("div", attrs={"class": "IsZvec"})
     if sdiv:
-        stspan = sdiv.find("span", attrs={"class": "st"})
+        stspan = sdiv.find("span", attrs={"class": "aCOpRe"})
         if stspan is not None:
             # return stspan.text.encode("utf-8").strip()
             return stspan.text.strip()

@@ -16,6 +16,7 @@ from functools import wraps
 from urllib.parse import urlencode
 from fake_useragent import UserAgent
 import sys
+import os
 
 class AreaError(KeyError):
     pass
@@ -469,6 +470,10 @@ def get_browser_with_url(url, timeout=120, driver="firefox"):
         browser = webdriver.Ie()
     elif driver == "chrome":
         browser = webdriver.Chrome()
+    elif os.environ.get('REMOTE_DIRVER'):
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        browser = webdriver.Remote(os.environ.get('REMOTE_DIRVER'), options=options)
     else:
         print("Driver choosen is not recognized")
 

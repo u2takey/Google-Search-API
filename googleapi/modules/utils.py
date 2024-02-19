@@ -464,16 +464,16 @@ def get_browser_with_url(url, timeout=120, driver="firefox"):
     """Returns an open browser with a given url."""
 
     # choose a browser
-    if driver == "firefox":
+    if os.environ.get('REMOTE_DIRVER'):
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        browser = webdriver.Remote(os.environ.get('REMOTE_DIRVER'), options=options)
+    elif driver == "firefox":
         browser = webdriver.Firefox()
     elif driver == "ie":
         browser = webdriver.Ie()
     elif driver == "chrome":
         browser = webdriver.Chrome()
-    elif os.environ.get('REMOTE_DIRVER'):
-        options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
-        browser = webdriver.Remote(os.environ.get('REMOTE_DIRVER'), options=options)
     else:
         print("Driver choosen is not recognized")
 
